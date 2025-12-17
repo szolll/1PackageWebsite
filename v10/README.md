@@ -1,8 +1,16 @@
 # v10 - Hyper-Optimized
 
-**Size:** 348 bytes (294 gzipped)
+**Size:** 703 bytes (449 gzipped)
 
-The smallest version - every byte intentionally chosen.
+Multi-page site with navigation - every byte intentionally chosen.
+
+## Pages
+- `index.html` (703b) - Home with 3 dots (one pink)
+- `about.html` (762b) - About section
+- `contact.html` (709b) - Contact info
+- `links.html` (804b) - Social links
+- `projects.html` (800b) - Project list
+- `login.html` (909b) - Login form
 
 ## Optimization Techniques Applied
 
