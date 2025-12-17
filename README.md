@@ -2,7 +2,7 @@
 
 Fully functional websites that fit in a single TCP packet.
 
-## Versions (25 total)
+## Versions (28 total)
 
 ### Dark 2025 Themes
 | Version | Bytes | Description |
@@ -22,6 +22,9 @@ Fully functional websites that fit in a single TCP packet.
 | [v23](v23/) | 1170 | Stack Card - skill badges |
 | [v24](v24/) | 1175 | Wave - warm gradient |
 | [v25](v25/) | 983 | Mono - terminal log style |
+| [v26](v26/) | 761 | Split - 50/50 layout |
+| [v27](v27/) | 898 | Glow - ambient orbs |
+| [v28](v28/) | 944 | Line - editorial dividers |
 
 ### Dark Classic
 | Version | Bytes | Description |
