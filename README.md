@@ -54,7 +54,7 @@ Fully functional websites that fit in a single TCP packet.
 
 ## Optimization Guide
 
-See [v10/OPTIMIZATION.md](v10/OPTIMIZATION.md)
+See [OPTIMIZATION.md](OPTIMIZATION.md) - comprehensive guide with 240+ lines of techniques.
 
 **Key techniques:**
 - Omit optional tags (`<html>`, `<head>`, `<body>`)
