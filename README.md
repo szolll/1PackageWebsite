@@ -2,7 +2,7 @@
 
 Fully functional websites that fit in a single TCP packet.
 
-## Versions (22 total)
+## Versions (25 total)
 
 ### Dark 2025 Themes
 | Version | Bytes | Description |
@@ -19,6 +19,9 @@ Fully functional websites that fit in a single TCP packet.
 | [v20](v20/) | 938 | Link in Bio - social links |
 | [v21](v21/) | 1035 | macOS Terminal - fake window |
 | [v22](v22/) | 1121 | Grain Studio - editorial |
+| [v23](v23/) | 1170 | Stack Card - skill badges |
+| [v24](v24/) | 1175 | Wave - warm gradient |
+| [v25](v25/) | 983 | Mono - terminal log style |
 
 ### Dark Classic
 | Version | Bytes | Description |
