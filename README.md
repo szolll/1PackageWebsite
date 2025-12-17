@@ -52,6 +52,6 @@ See [v10/OPTIMIZATION.md](v10/OPTIMIZATION.md)
 - Short hex: `#fff`, `#0ff`
 - Single-char classes
 
-## Live Preview
+## Usage
 
-https://szolll.github.io/1PackageWebsite/
+Open any `index.html` locally in a browser to preview.
