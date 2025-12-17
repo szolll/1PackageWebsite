@@ -16,6 +16,7 @@
 
 | Technique | Example | Saves |
 |-----------|---------|-------|
+| Grid centering | `display:grid;place-items:center` vs `display:flex;align-items:center;justify-content:center` | **20** |
 | No space after `:` | `color:#fff` | 1 each |
 | No final `;` | `{margin:0}` | 1 each rule |
 | Short colors | `#000` vs `black` | 1 |
@@ -25,7 +26,15 @@
 | Single char classes | `.c` vs `.card` | 3 |
 | Element selectors | `h1` vs `.title` | 4 |
 | Combine selectors | `h1,p{m:0}` | many |
+| `height` vs `min-height` | `height:100vh` | 4 |
 | `all:unset` | Resets in 10 bytes | varies |
+
+## HTML Tag Savings
+
+| Long | Short | Saves |
+|------|-------|-------|
+| `<span class=x>` | `<b>` or `<i>` | ~10 each |
+| `<div class=x>` | `<p>` or `<section>` | varies |
 
 ## Content Byte Savings
 
