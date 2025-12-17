@@ -2,7 +2,7 @@
 
 Fully functional websites that fit in a single TCP packet.
 
-## Versions (19 total)
+## Versions (22 total)
 
 ### Dark 2025 Themes
 | Version | Bytes | Description |
@@ -16,6 +16,9 @@ Fully functional websites that fit in a single TCP packet.
 | [v14](v14/) | 1206 | Dev Portfolio - card style |
 | [v19](v19/) | 1257 | Profile Card - gradient header |
 | [v16](v16/) | 1314 | Cyberpunk - angular/neon |
+| [v20](v20/) | 938 | Link in Bio - social links |
+| [v21](v21/) | 1035 | macOS Terminal - fake window |
+| [v22](v22/) | 1121 | Grain Studio - editorial |
 
 ### Dark Classic
 | Version | Bytes | Description |
@@ -54,4 +57,9 @@ See [v10/OPTIMIZATION.md](v10/OPTIMIZATION.md)
 
 ## Usage
 
-Open any `index.html` locally in a browser to preview.
+```bash
+./serve.sh        # Start local server on port 8000
+./serve.sh 3000   # Or custom port
+```
+
+Then open http://localhost:8000 in your browser.
