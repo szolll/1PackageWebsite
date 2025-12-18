@@ -2,6 +2,24 @@
 
 Techniques learned across 30 single-packet websites.
 
+## Deep Dive Results (737 bytes saved)
+
+Actual savings from auditing all 30 versions:
+
+| Optimization | Files | Total Saved |
+|-------------|-------|-------------|
+| Remove `<html>`, `</html>`, `<head>`, `</head>` | 9 | ~400b |
+| Short viewport (omit `initial-scale=1`) | 16 | ~256b |
+| `transparent` → `#0000` | 7 | ~49b |
+| `min-height:100vh` → `height:100vh` | 8 | ~32b |
+
+### Key Learnings
+
+1. **Viewport meta**: `initial-scale=1` is default - omit it (saves 16b)
+2. **HTML structure tags**: Browser creates `<html>`, `<head>`, `<body>` - omit all (saves 39b+)
+3. **Color keywords**: `transparent` = 11 chars, `#0000` = 5 chars (saves 6b each)
+4. **Height shortcut**: `height:100vh` works for centered layouts (saves 4b vs min-height)
+
 ## HTML Structure
 
 | Technique | Saves | Notes |
