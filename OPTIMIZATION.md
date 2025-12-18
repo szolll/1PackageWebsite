@@ -172,20 +172,79 @@ background:#fff2;backdrop-filter:blur(10px);border:1px solid #fff3
 | Blinking cursor | 45 | Keyframe animation |
 | Pill button | 60 | Padding + radius |
 
-## Mobile Responsive
+## Mobile Friendly (Critical)
+
+Without viewport meta, mobile browsers zoom out to show desktop view. **Always include it.**
+
+### Viewport Meta Options
+
+| Version | Bytes | Notes |
+|---------|-------|-------|
+| `<meta name=viewport content="width=device-width,initial-scale=1">` | 65 | Standard, safest |
+| `<meta name=viewport content="width=device-width">` | 49 | Short, works in modern browsers |
+
+**Use the 49-byte version** - `initial-scale=1` is default when `width=device-width` is set.
+
+### Mobile-First CSS (No Media Queries)
+
+These patterns are responsive by default - no extra bytes:
 
 ```css
-/* Minimal media query: ~35 bytes */
-@media(max-width:600px){...}
+/* Fluid width - auto-responsive */
+max-width:480px;margin:0 auto    /* 27 bytes */
 
-/* Skip viewport meta if you can handle desktop only */
-/* Saves: 55 bytes */
+/* Percentage widths */
+width:90%                         /* 9 bytes */
+
+/* Viewport units */
+width:80vw                        /* 10 bytes */
+font-size:4vw                     /* 13 bytes - scales with screen */
+
+/* Grid auto-wrap */
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr))  /* 55 bytes */
 ```
 
-### Responsive Tricks
-- `max-width:480px` on body (12 bytes) - auto responsive
-- `vw` units for fluid sizing
-- Grid auto-wraps with `repeat(auto-fit,minmax(...))`
+### When You Need Media Queries
+
+Only add if layout truly breaks on mobile:
+
+```css
+/* Minimal: 25 bytes + content */
+@media(max-width:600px){...}
+
+/* Common breakpoints */
+600px  /* tablets */
+480px  /* phones */
+320px  /* small phones */
+```
+
+### Mobile-Safe Patterns
+
+| Pattern | Safe? | Notes |
+|---------|-------|-------|
+| `display:grid;place-items:center` | ✓ | Works everywhere |
+| `height:100vh` | ✓ | Full viewport |
+| Fixed pixel widths | ✗ | Use max-width or % |
+| `position:fixed` | ⚠ | Can cause issues on iOS |
+| Hover effects | ⚠ | Add tap alternative |
+| Small tap targets | ✗ | Min 44px for buttons |
+
+### Recommended Mobile Base
+
+```css
+/* 49 bytes - add to all sites */
+<meta name=viewport content="width=device-width">
+
+/* Body setup for mobile: ~40 bytes */
+body{max-width:480px;margin:0 auto;padding:20px}
+```
+
+### Testing Mobile
+
+```bash
+# Chrome DevTools: Cmd+Shift+M (Mac) / Ctrl+Shift+M (Win)
+# Or resize browser to 375px width (iPhone)
+```
 
 ## Advanced Saves
 
@@ -212,16 +271,18 @@ h1::after{content:"→"}  /* 20 bytes */
 
 ## Checklist Before Ship
 
-1. ☐ Remove all spaces after `:` in CSS
-2. ☐ Remove final `;` in each rule
-3. ☐ Use `#fff` not `#ffffff`
-4. ☐ Use Grid not Flex for centering
-5. ☐ Use font shorthand
-6. ☐ Single char class names
-7. ☐ Omit optional closing tags
-8. ☐ Omit attribute quotes
-9. ☐ Short content text
-10. ☐ Run `wc -c` to verify < 1400
+1. ☐ Has viewport meta tag (mobile-friendly)
+2. ☐ Remove all spaces after `:` in CSS
+3. ☐ Remove final `;` in each rule
+4. ☐ Use `#fff` not `#ffffff`
+5. ☐ Use Grid not Flex for centering
+6. ☐ Use font shorthand
+7. ☐ Single char class names
+8. ☐ Omit optional closing tags
+9. ☐ Omit attribute quotes
+10. ☐ Short content text
+11. ☐ No fixed pixel widths (use max-width or %)
+12. ☐ Run `wc -c` to verify < 1400
 
 ## Size Targets
 
@@ -235,10 +296,12 @@ h1::after{content:"→"}  /* 20 bytes */
 ## Quick Reference
 
 ```
+Mobile viewport: <meta name=viewport content="width=device-width">
 Grid center:     display:grid;place-items:center
 Dark mode:       background:#0a0a0a;color:#fff
 Font stack:      font:14px system-ui
 Full height:     height:100vh
+Responsive:      max-width:480px;margin:0 auto
 Card shadow:     box-shadow:0 4px 20px #0008
 Pill button:     padding:8px 20px;border-radius:20px
 Gradient:        background:linear-gradient(#f00,#00f)
