@@ -264,6 +264,169 @@ body{max-width:480px;margin:0 auto;padding:20px}
 # Or resize browser to 375px width (iPhone)
 ```
 
+## JavaScript Optimization
+
+### Inline Event Handlers (Smallest)
+```html
+<!-- 45 bytes -->
+<button onclick="document.body.classList.toggle('dark')">Theme</button>
+
+<!-- vs addEventListener: 80+ bytes -->
+<script>document.querySelector('button').addEventListener('click',()=>{})</script>
+```
+
+### Short JS Patterns
+| Long | Short | Saves |
+|------|-------|-------|
+| `document.getElementById('x')` | `document.querySelector('#x')` | 0 |
+| `document.querySelector` | `$` (if jQuery) | 16 |
+| `function(){}` | `()=>{}` | 6 |
+| `element.className='x'` | `element.classList.toggle('x')` | -8 |
+| `setAttribute('data-x','1')` | `dataset.x=1` | 12 |
+| `true` | `!0` | 2 |
+| `false` | `!1` | 3 |
+
+### Minimal Toggle Theme
+```html
+<!-- 73 bytes total -->
+<button onclick="document.documentElement.toggleAttribute('data-t')">☀</button>
+```
+
+### Minimal Game Loop
+```js
+// Shortest interval: 26 bytes
+setInterval(update,16)
+
+// Shortest RAF: 34 bytes
+requestAnimationFrame(update)
+```
+
+### Event Delegation
+```js
+// Instead of multiple listeners, use one on parent
+document.onclick=e=>{if(e.target.matches('a'))handle()}
+```
+
+## CSS Shorthands
+
+### Border Shorthand
+```css
+/* LONG: 42 bytes */
+border-width:1px;border-style:solid;border-color:#fff
+
+/* SHORT: 22 bytes */
+border:1px solid #fff
+```
+
+### Background Shorthand
+```css
+/* LONG: 65 bytes */
+background-color:#000;background-image:url(x);background-repeat:no-repeat
+
+/* SHORT: 35 bytes */
+background:#000 url(x) no-repeat
+```
+
+### Inset (Modern Positioning)
+```css
+/* LONG: 44 bytes */
+top:0;right:0;bottom:0;left:0
+
+/* SHORT: 8 bytes */
+inset:0
+```
+
+### Margin/Padding Patterns
+```css
+margin:10px           /* all sides */
+margin:10px 20px      /* vertical | horizontal */
+margin:10px 20px 30px /* top | horizontal | bottom */
+margin:1px 2px 3px 4px /* top right bottom left */
+```
+
+### Place Shorthand
+```css
+/* LONG: 47 bytes */
+align-items:center;justify-content:center
+
+/* SHORT: 20 bytes */
+place-items:center   /* only works with grid */
+```
+
+## Advanced CSS Tricks
+
+### all:unset (Nuclear Reset)
+```css
+/* Reset all properties: 10 bytes */
+button{all:unset}
+```
+
+### currentColor Keyword
+```css
+/* Inherits from color property */
+border:1px solid currentColor  /* 28 bytes */
+/* vs repeating the color */
+color:#f00;border:1px solid #f00  /* 32 bytes */
+```
+
+### inherit Keyword
+```css
+/* Inherit from parent: 7 bytes each */
+font:inherit
+color:inherit
+```
+
+### Negative Margins (Overlap)
+```css
+/* Pull element up without position:absolute */
+margin-top:-20px  /* 16 bytes vs position:absolute ~40 bytes */
+```
+
+### :is() and :where() Selectors
+```css
+/* LONG: 24 bytes */
+h1:hover,h2:hover,h3:hover{}
+
+/* SHORT: 21 bytes */
+:is(h1,h2,h3):hover{}
+```
+
+### Gap vs Margin (Flexbox/Grid)
+```css
+/* Instead of margin on children */
+.parent{gap:10px}  /* 10 bytes, cleaner */
+```
+
+## HTML Attributes
+
+### Boolean Attributes
+```html
+<!-- These are equivalent -->
+<input disabled>           <!-- 8 bytes -->
+<input disabled=disabled>  <!-- 18 bytes - waste! -->
+<input disabled="">        <!-- 11 bytes - waste! -->
+```
+
+### Shortest Links
+```html
+<a href=#>Link</a>      <!-- # = same page, 1 byte -->
+<a href=/>Home</a>      <!-- / = root, 1 byte -->
+<a href=//x.co>X</a>    <!-- protocol-relative -->
+```
+
+### Omit http/https
+```html
+<!-- Works for external links -->
+<a href=//example.com>Link</a>  <!-- saves 5-6 bytes -->
+```
+
+### Input Shortcuts
+```html
+<input type=text>     <!-- default, can omit type entirely -->
+<input>               <!-- same as above, saves 11 bytes -->
+<input type=email>    <!-- provides mobile keyboard -->
+```
+
 ## Advanced Saves
 
 ### Combine Similar Properties
@@ -287,20 +450,104 @@ color:var(--c)  /* 14 bytes each use */
 h1::after{content:"→"}  /* 20 bytes */
 ```
 
+### Attribute Selectors (No Classes)
+```css
+/* Style by attribute instead of class */
+[href]{color:red}        /* all links */
+[type=email]{border:red} /* email inputs */
+```
+
+## SVG Optimization
+
+### Inline SVG (When Tiny)
+```html
+<!-- Minimal icon: ~50 bytes -->
+<svg viewBox="0 0 24 24" width=24><path d="M12 2L2 22h20z"/></svg>
+```
+
+### SVG Shortcuts
+| Technique | Saves |
+|-----------|-------|
+| Remove `xmlns` attribute | 36 |
+| Remove `xml:space` | 20 |
+| Use `viewBox` not `width/height` | varies |
+| Round path numbers | 1-3 per number |
+| Remove unnecessary precision | `1.000` → `1` |
+| Use `z` to close paths | vs repeating first point |
+
+### Consider CSS Instead
+```css
+/* Triangle: ~40 bytes vs SVG ~60 bytes */
+.arrow{border:10px solid #0000;border-top-color:#fff}
+
+/* Circle: ~35 bytes vs SVG ~70 bytes */
+.dot{width:10px;height:10px;border-radius:50%;background:#fff}
+```
+
+## Tools & Validation
+
+### Size Check Commands
+```bash
+# Check raw size
+wc -c file.html
+
+# Check gzip size (what actually transfers)
+gzip -c file.html | wc -c
+
+# Check all versions
+for f in v*/index.html; do echo "$(wc -c < "$f") $f"; done | sort -n
+```
+
+### Online Minifiers
+- [HTML Minifier](https://kangax.github.io/html-minifier/)
+- [CSS Nano](https://cssnano.co/playground/)
+- [Terser](https://try.terser.org/) (JS)
+
+### Browser DevTools
+```
+Network tab → Size column → Shows actual transfer size
+Lighthouse → Performance → Shows render metrics
+```
+
+### Validation
+```bash
+# HTML5 validation (if you care)
+curl -s https://validator.w3.org/nu/?out=json --data-binary @file.html
+
+# Or just: if it renders, it works ™
+```
+
 ## Checklist Before Ship
 
+### HTML
 1. ☐ Has viewport meta tag (mobile-friendly)
-2. ☐ Remove all spaces after `:` in CSS
-3. ☐ Remove final `;` in each rule
-4. ☐ Use `#fff` not `#ffffff`
-5. ☐ Use Grid not Flex for centering
-6. ☐ Use font shorthand
-7. ☐ Single char class names
-8. ☐ Omit optional closing tags
-9. ☐ Omit attribute quotes
-10. ☐ Short content text
-11. ☐ No fixed pixel widths (use max-width or %)
-12. ☐ Run `wc -c` to verify < 1400
+2. ☐ Omit `<html>`, `<head>`, `<body>` tags
+3. ☐ Omit optional closing tags (`</p>`, `</li>`)
+4. ☐ Omit attribute quotes where possible
+5. ☐ Use short tag names (`<b>` vs `<span>`)
+
+### CSS
+6. ☐ Remove all spaces after `:` in CSS
+7. ☐ Remove final `;` in each rule
+8. ☐ Use `#fff` not `#ffffff`
+9. ☐ Use `#0000` not `transparent`
+10. ☐ Use Grid not Flex for centering
+11. ☐ Use font shorthand
+12. ☐ Use `height:100vh` not `min-height`
+13. ☐ Single char class names
+14. ☐ Use `inset:0` not `top:0;right:0;bottom:0;left:0`
+
+### JavaScript
+15. ☐ Use arrow functions `()=>{}`
+16. ☐ Use inline `onclick` for simple handlers
+17. ☐ Use `!0`/`!1` for true/false
+18. ☐ Use template literals only if shorter
+
+### Content
+19. ☐ Short content text (Hi vs Hello)
+20. ☐ Use Unicode symbols (→ vs "arrow")
+21. ☐ No fixed pixel widths (use max-width or %)
+22. ☐ Run `wc -c` to verify < 1400
 
 ## Size Targets
 
@@ -314,14 +561,29 @@ h1::after{content:"→"}  /* 20 bytes */
 ## Quick Reference
 
 ```
+=== HTML ===
 Mobile viewport: <meta name=viewport content="width=device-width">
+Omit tags:       <html>, <head>, <body>, </p>, </li>
+Short link:      <a href=#>
+
+=== CSS Layout ===
 Grid center:     display:grid;place-items:center
-Dark mode:       background:#0a0a0a;color:#fff
-Font stack:      font:14px system-ui
 Full height:     height:100vh
 Responsive:      max-width:480px;margin:0 auto
+Full cover:      inset:0 (replaces top/right/bottom/left:0)
+
+=== CSS Style ===
+Dark mode:       background:#0a0a0a;color:#fff
+Font stack:      font:14px system-ui
 Card shadow:     box-shadow:0 4px 20px #0008
 Pill button:     padding:8px 20px;border-radius:20px
 Gradient:        background:linear-gradient(#f00,#00f)
 Transition:      transition:.2s
+Transparent:     #0000 (not 'transparent')
+Alpha black:     #0008 (not rgba(0,0,0,.5))
+
+=== JavaScript ===
+Theme toggle:    onclick="document.documentElement.toggleAttribute('data-t')"
+Arrow func:      ()=>{}
+True/false:      !0 / !1
 ```
