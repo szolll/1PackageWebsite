@@ -35,7 +35,7 @@ Fully functional websites that fit in a single TCP packet.
 |---------|-------|-------------|
 | [v10](v10/) | 895 | Hyper-optimized jumbled |
 | [v8](v8/) | 993 | ASCII Art |
-| [v9](v9/) | 1162 | Tic Tac Toe game |
+| [v9](v9/) | 1155 | Tic Tac Toe game |
 | [v5](v5/) | 1202 | Retro Terminal |
 | [v4](v4/) | 1304 | Neon Cyberpunk |
 | [v3](v3/) | 1323 | Web 2.0 + theme |
