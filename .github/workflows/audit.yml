@@ -1,0 +1,159 @@
+name: Optimization Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Size Check (must be under 1400 bytes)
+        run: |
+          echo "=== Size Check ==="
+          MAX_SIZE=1400
+          FAILED=0
+
+          for dir in v*/; do
+            if [ -f "$dir/index.html" ]; then
+              SIZE=$(wc -c < "$dir/index.html")
+              VERSION="${dir%/}"
+
+              if [ $SIZE -gt $MAX_SIZE ]; then
+                echo "::error::$VERSION: ${SIZE}b exceeds ${MAX_SIZE}b limit"
+                FAILED=1
+              else
+                echo "✓ $VERSION: ${SIZE}b"
+              fi
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            exit 1
+          fi
+          echo "All versions under ${MAX_SIZE}b limit"
+
+      - name: Viewport Meta Check
+        run: |
+          echo "=== Viewport Meta Check ==="
+          FAILED=0
+
+          for file in v*/index.html; do
+            if ! grep -q 'name=viewport' "$file"; then
+              echo "::error::$file missing viewport meta tag"
+              FAILED=1
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            exit 1
+          fi
+          echo "✓ All versions have viewport meta"
+
+      - name: No Unnecessary HTML Structure Tags
+        run: |
+          echo "=== Structure Tag Check ==="
+          FAILED=0
+
+          for file in v*/index.html; do
+            if grep -qE '<html>|</html>|<head>|</head>|</body>' "$file"; then
+              echo "::error::$file has unnecessary structure tags (<html>, <head>, </body>)"
+              FAILED=1
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            exit 1
+          fi
+          echo "✓ No unnecessary structure tags"
+
+      - name: No 'transparent' Keyword
+        run: |
+          echo "=== Transparent Keyword Check ==="
+          FAILED=0
+
+          for file in v*/index.html; do
+            if grep -q 'transparent' "$file"; then
+              echo "::error::$file uses 'transparent' - use #0000 instead (saves 7 bytes)"
+              FAILED=1
+            fi
+          done
+
+          if [ $FAILED -eq 1 ]; then
+            exit 1
+          fi
+          echo "✓ No 'transparent' keyword found"
+
+      - name: No Long Viewport Meta
+        run: |
+          echo "=== Viewport Meta Length Check ==="
+          FAILED=0
+
+          for file in v*/index.html; do
+            if grep -q 'initial-scale=1' "$file"; then
+              echo "::warning::$file has 'initial-scale=1' - can be omitted (saves 16 bytes)"
+              # Warning only, not a failure
+            fi
+          done
+
+          echo "✓ Viewport meta check complete"
+
+      - name: No min-height:100vh
+        run: |
+          echo "=== Height Check ==="
+          FAILED=0
+
+          for file in v*/index.html; do
+            if grep -q 'min-height:100vh' "$file"; then
+              echo "::warning::$file uses 'min-height:100vh' - use 'height:100vh' (saves 4 bytes)"
+              # Warning only, not a failure
+            fi
+          done
+
+          echo "✓ Height check complete"
+
+      - name: Check for 6-char Hex Colors
+        run: |
+          echo "=== Hex Color Check ==="
+
+          for file in v*/index.html; do
+            # Look for reducible patterns like #aabbcc -> #abc
+            if grep -oE '#([0-9a-fA-F])\1([0-9a-fA-F])\2([0-9a-fA-F])\3' "$file" 2>/dev/null; then
+              echo "::warning::$file has reducible 6-char hex colors"
+            fi
+          done
+
+          echo "✓ Hex color check complete"
+
+      - name: Summary Report
+        run: |
+          echo ""
+          echo "=== OPTIMIZATION AUDIT SUMMARY ==="
+          echo ""
+          echo "| Version | Size | Gzip | Status |"
+          echo "|---------|------|------|--------|"
+
+          for dir in v*/; do
+            if [ -f "$dir/index.html" ]; then
+              VERSION="${dir%/}"
+              SIZE=$(wc -c < "$dir/index.html")
+              GZIP=$(gzip -c "$dir/index.html" | wc -c)
+
+              if [ $SIZE -le 1400 ]; then
+                STATUS="✓"
+              else
+                STATUS="✗"
+              fi
+
+              echo "| $VERSION | ${SIZE}b | ${GZIP}b | $STATUS |"
+            fi
+          done | sort -t'|' -k2 -n
+
+          echo ""
+          TOTAL=$(ls -d v*/ 2>/dev/null | wc -l)
+          echo "Total versions: $TOTAL"
