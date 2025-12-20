@@ -4,7 +4,7 @@ Fully functional websites that fit in a single TCP packet.
 
 [![Optimization Audit](https://github.com/szolll/1PackageWebsite/actions/workflows/audit.yml/badge.svg)](https://github.com/szolll/1PackageWebsite/actions/workflows/audit.yml)
 
-## Versions (30 total)
+## Versions (35 total)
 
 ### Dark 2025 Themes
 | Version | Bytes | Description |
@@ -35,7 +35,6 @@ Fully functional websites that fit in a single TCP packet.
 |---------|-------|-------------|
 | [v10](v10/) | 895 | Hyper-optimized jumbled |
 | [v8](v8/) | 993 | ASCII Art |
-| [v9](v9/) | 1155 | Tic Tac Toe game |
 | [v5](v5/) | 1202 | Retro Terminal |
 | [v4](v4/) | 1304 | Neon Cyberpunk |
 | [v3](v3/) | 1323 | Web 2.0 + theme |
@@ -47,6 +46,16 @@ Fully functional websites that fit in a single TCP packet.
 | [v7](v7/) | 1075 | Neumorphism |
 | [v6](v6/) | 1150 | Brutalist |
 | [v2](v2/) | 1306 | Personal Portfolio |
+
+### Games
+| Version | Bytes | Description |
+|---------|-------|-------------|
+| [v9](v9/) | 1155 | Tic Tac Toe |
+| [v32](v32/) | 1065 | Reaction Time |
+| [v31](v31/) | 1084 | Clicker |
+| [v35](v35/) | 1167 | Rock Paper Scissors |
+| [v33](v33/) | 1182 | Memory Match |
+| [v34](v34/) | 1344 | Number Guess |
 
 ## Size Check
 
