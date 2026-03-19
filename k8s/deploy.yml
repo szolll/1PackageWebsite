@@ -1,0 +1,110 @@
+---
+# ── nginx config ──────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: onepackage-nginx-conf
+  namespace: default
+data:
+  nginx.conf: |
+    server {
+      listen 80;
+      root /usr/share/nginx/html;
+      index index.html;
+
+      error_page 404 /404.html;
+      location = /404.html { internal; }
+
+      location / {
+        try_files $uri $uri.html $uri/ =404;
+      }
+    }
+
+---
+# ── HTML files ────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: onepackage-html
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0}body{height:100vh;display:grid;place-items:center;font:14px system-ui;background:#0c0c0c;color:#fff}.c{text-align:center}h1{font-size:64px;font-weight:700;letter-spacing:-3px;margin-bottom:16px}h1 span{display:inline-block;animation:b .6s infinite}@keyframes b{50%{opacity:0}}p{color:#555;font-size:14px;margin-bottom:24px}a{color:#888;text-decoration:none;font-size:12px;border:1px solid #333;padding:8px 20px;border-radius:4px}a:hover{color:#fff;border-color:#555}</style><div class=c><h1>Welcome<span>_</span></h1><p>Minimalist powered</p><a href=explore.html>Explore</a></div>
+  explore.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>Explore — 1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0;box-sizing:border-box}body{min-height:100vh;font:14px system-ui;background:#0c0c0c;color:#fff;padding:40px 20px}a{color:#888;text-decoration:none}a:hover{color:#fff}.w{max-width:600px;margin:0 auto}h2{font-size:42px;font-weight:700;letter-spacing:-2px;margin-bottom:12px}p{color:#555;line-height:1.6;margin-bottom:48px}.g{display:grid;gap:12px}.c{border:1px solid #1a1a1a;padding:24px 28px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;transition:border-color .2s}.c:hover{border-color:#333}.cl{display:flex;flex-direction:column;gap:4px}.ct{font-size:14px;font-weight:600}.cd{color:#555;font-size:12px}.ca{color:#333;font-size:18px}</style><div class=w><h2>1Package</h2><p>Everything in one place. Pick where you want to go.</p><div class=g><a class=c href=about.html><div class=cl><div class=ct>About</div><div class=cd>What 1Package is and why it exists</div></div><div class=ca>→</div></a><a class=c href=docs.html><div class=cl><div class=ct>Docs</div><div class=cd>Guides, references, and examples</div></div><div class=ca>→</div></a><a class=c href=changelog.html><div class=cl><div class=ct>Changelog</div><div class=cd>What's new and what's changed</div></div><div class=ca>→</div></a><a class=c href=contact.html><div class=cl><div class=ct>Contact</div><div class=cd>Get in touch with the team</div></div><div class=ca>→</div></a></div></div>
+  about.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>About — 1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0;box-sizing:border-box}body{min-height:100vh;font:14px system-ui;background:#0c0c0c;color:#fff;padding:40px 20px}a{color:#888;text-decoration:none}.b{font-size:12px;border:1px solid #333;padding:8px 20px;border-radius:4px;display:inline-block}.b:hover{color:#fff;border-color:#555}.w{max-width:600px;margin:0 auto}nav{margin-bottom:60px}h2{font-size:42px;font-weight:700;letter-spacing:-2px;margin-bottom:16px}p{color:#555;line-height:1.6;margin-bottom:60px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.f{border:1px solid #1a1a1a;padding:24px;border-radius:6px;transition:border-color .2s}.f:hover{border-color:#333}.i{font-size:24px;margin-bottom:12px}h3{font-size:14px;font-weight:600;margin-bottom:8px}.d{color:#555;font-size:12px;line-height:1.5}@media(max-width:480px){.g{grid-template-columns:1fr}}</style><div class=w><nav><a class=b href=explore.html>← Home</a></nav><h2>About</h2><p>1Package ships everything you need in one place. No bloat, no dependencies, just the essentials.</p><h2>Features</h2><div class=g><div class=f><div class=i>⚡</div><h3>Fast</h3><div class=d>Optimized from the ground up. Ships lean, runs instantly.</div></div><div class=f><div class=i>◻</div><h3>Minimal</h3><div class=d>Only what you need. Nothing you don't. Clean by default.</div></div><div class=f><div class=i>◯</div><h3>Open</h3><div class=d>Built to extend. No lock-in, no surprises, no hidden costs.</div></div></div></div>
+  docs.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>Docs — 1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0;box-sizing:border-box}body{min-height:100vh;font:14px system-ui;background:#0c0c0c;color:#fff;padding:40px 20px}a{color:#888;text-decoration:none}.b{font-size:12px;border:1px solid #333;padding:8px 20px;border-radius:4px;display:inline-block}.b:hover{color:#fff;border-color:#555}.w{max-width:600px;margin:0 auto}nav{margin-bottom:60px}h2{font-size:42px;font-weight:700;letter-spacing:-2px;margin-bottom:12px}h3{font-size:13px;font-weight:600;color:#fff;margin-bottom:8px}.s{margin-bottom:40px}.t{display:inline-block;font-size:11px;font-family:monospace;background:#111;border:1px solid #222;padding:2px 8px;border-radius:3px;color:#aaa;margin-bottom:16px}p{color:#555;line-height:1.7;font-size:13px}pre{background:#111;border:1px solid #1a1a1a;border-radius:4px;padding:16px;margin-top:12px;overflow-x:auto}code{font-family:monospace;font-size:12px;color:#aaa}.d{width:100%;height:1px;background:#1a1a1a;margin-bottom:40px}</style><div class=w><nav><a class=b href=explore.html>← Home</a></nav><h2>Docs</h2><div class=s><div class=t>Getting Started</div><h3>Installation</h3><p>Install 1Package with a single command. No config required out of the box.</p><pre><code>npm install 1package</code></pre></div><div class=d></div><div class=s><div class=t>Usage</div><h3>Basic Setup</h3><p>Import and initialize. Everything is available from the root export.</p><pre><code>import pkg from '1package'&#10;&#10;pkg.init({ mode: 'minimal' })</code></pre></div></div>
+  changelog.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>Changelog — 1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0;box-sizing:border-box}body{min-height:100vh;font:14px system-ui;background:#0c0c0c;color:#fff;padding:40px 20px}a{color:#888;text-decoration:none}.b{font-size:12px;border:1px solid #333;padding:8px 20px;border-radius:4px;display:inline-block}.b:hover{color:#fff;border-color:#555}.w{max-width:600px;margin:0 auto}nav{margin-bottom:60px}h2{font-size:42px;font-weight:700;letter-spacing:-2px;margin-bottom:12px}.sub{color:#555;line-height:1.6;margin-bottom:48px}.e{margin-bottom:40px}.top{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}.v{font-size:13px;font-weight:600}.d{font-size:11px;color:#444}.tag{font-size:10px;border:1px solid #222;padding:2px 8px;border-radius:3px;color:#555}.latest{border-color:#2a2a2a;color:#666}ul{list-style:none;padding:0}li{color:#555;font-size:13px;padding:5px 0;border-bottom:1px solid #111;line-height:1.5}li:last-child{border:0}li::before{content:"–  ";color:#333}.div{width:100%;height:1px;background:#1a1a1a;margin-bottom:40px}</style><div class=w><nav><a class=b href=explore.html>← Home</a></nav><h2>Changelog</h2><p class=sub>What's new in 1Package.</p><div class=e><div class=top><span class=v>v0.3.0</span><span class=d>Mar 2026</span><span class="tag latest">latest</span></div><ul><li>Improved init performance by 40%</li><li>Added debug mode option</li><li>Fixed cache invalidation on config change</li><li>Smaller bundle — down to 2.1kb</li></ul></div><div class=div></div><div class=e><div class=top><span class=v>v0.2.0</span><span class=d>Feb 2026</span></div><ul><li>TypeScript types now bundled</li><li>New minimal mode (default)</li><li>Removed legacy adapter</li></ul></div><div class=div></div><div class=e><div class=top><span class=v>v0.1.0</span><span class=d>Jan 2026</span></div><ul><li>Initial release</li><li>Core init and config API</li><li>Zero dependencies</li></ul></div></div>
+  contact.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>Contact — 1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0;box-sizing:border-box}body{min-height:100vh;font:14px system-ui;background:#0c0c0c;color:#fff;padding:40px 20px}a{color:#888;text-decoration:none}.b{font-size:12px;border:1px solid #333;padding:8px 20px;border-radius:4px;display:inline-block}.b:hover{color:#fff;border-color:#555}.w{max-width:600px;margin:0 auto}nav{margin-bottom:60px}h2{font-size:42px;font-weight:700;letter-spacing:-2px;margin-bottom:12px}p{color:#555;line-height:1.6;margin-bottom:40px}.card{border:1px solid #1a1a1a;border-radius:6px;padding:28px;margin-bottom:16px}.label{font-size:11px;color:#444;margin-bottom:6px}.val{font-size:13px;color:#888}.val a{border:0;padding:0;font-size:13px}.val a:hover{color:#fff}.div{width:100%;height:1px;background:#1a1a1a;margin:24px 0}</style><div class=w><nav><a class=b href=explore.html>← Home</a></nav><h2>Contact</h2><p>Have a question or just want to say hi? Reach out.</p><div class=card><div class=label>EMAIL</div><div class=val><a href=mailto:info@szol.nl>info@szol.nl</a></div><div class=div></div><div class=label>LOCATION</div><div class=val>Amsterdam, Netherlands</div><div class=div></div><div class=label>RESPONSE TIME</div><div class=val>Usually within 48 hours</div></div></div>
+  404.html: |
+    <!DOCTYPE html><meta charset=UTF-8><meta name=viewport content="width=device-width"><title>404 — 1Package</title><link rel=icon href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>"><style>*{margin:0}body{height:100vh;display:grid;place-items:center;font:14px system-ui;background:#0c0c0c;color:#fff}.c{text-align:center}h1{font-size:64px;font-weight:700;letter-spacing:-3px;margin-bottom:16px;color:#222}p{color:#555;font-size:14px;margin-bottom:24px}a{color:#888;text-decoration:none;font-size:12px;border:1px solid #333;padding:8px 20px;border-radius:4px}a:hover{color:#fff;border-color:#555}</style><div class=c><h1>404</h1><p>Nothing here.</p><a href=explore.html>← Home</a></div>
+
+---
+# ── Deployment ────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onepackage
+  namespace: default
+  labels:
+    app: onepackage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: onepackage
+  template:
+    metadata:
+      labels:
+        app: onepackage
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: html
+          configMap:
+            name: onepackage-html
+        - name: nginx-conf
+          configMap:
+            name: onepackage-nginx-conf
+
+---
+# ── Service ───────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: onepackage
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: onepackage
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
