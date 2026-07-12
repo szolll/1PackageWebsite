@@ -8,7 +8,9 @@ on:
 
 jobs:
   audit:
-    runs-on: ubuntu-latest
+    # Self-hosted runner on runal01 (registered via ansible-homelab's
+    # github_runner role) — GitHub-hosted runners are billing-blocked.
+    runs-on: [self-hosted, linux, x64]
 
     steps:
       - uses: actions/checkout@v4
