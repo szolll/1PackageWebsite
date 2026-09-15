@@ -30,6 +30,7 @@ jobs:
     # Self-hosted runner on runal01 (registered via ansible-homelab's
     # github_runner role) — GitHub-hosted runners are billing-blocked.
     runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v4
